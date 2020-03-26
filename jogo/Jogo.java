@@ -4,12 +4,14 @@
 
 package com.centuri123.jogo;
 
+import java.io.IOException;
+
 public class Jogo {
 	private boolean flagJogo = true;
 	private boolean flagVence = true; 
 	private boolean flagErro = false;
 	
-	public Jogo() {
+	public Jogo() throws InterruptedException, IOException {
 		InputOutput inOut = new InputOutput();
 		Boneco boneco = new Boneco();
 		Placar placar = new Placar();
@@ -17,18 +19,23 @@ public class Jogo {
 		this.rodaJogo(inOut, placar, boneco);
 	}
 	
-	private void rodaJogo(InputOutput inOut, Placar placar, Boneco boneco) {
+	private void rodaJogo(InputOutput inOut, Placar placar, Boneco boneco) throws InterruptedException, IOException {
 		int i = 0;
 		char[] palavra = {'T','E','S','T','E'}; //Em andamento classe que recebe do BD as palavras sorteadas.
 		while(this.getFlagJogo()){
 			for(i=0;i<palavra.length;i++){
 				if(palavra[i] == inOut.getLetra()){
-					this.setFlagErro(true);
-					placar.addQuantAcerto();
+					if(!inOut.validaLetraRepetida(placar.getLetrasUtilizadas())) {
+						this.setFlagErro(true);
+						placar.addQuantAcerto();	
+					}
+					
 				}else{
 					if((i == (palavra.length-1)) && !(this.getFlagErro())){
-						placar.addQuantErro();
-						boneco.removeVida();
+						if(!inOut.validaLetraRepetida(placar.getLetrasUtilizadas())) {
+							placar.addQuantErro();
+							boneco.removeVida();
+						}
 						if(placar.getQuantErro() == 1){
 							boneco.desenhoBoneco[0][1] = 79;
 						}else if(placar.getQuantErro() == 2){
@@ -55,10 +62,20 @@ public class Jogo {
 				this.setFlagVence(false);
 				break;
 			}
+			/*Limpa cmd com timeout de 1000 milisegundos - Testando se vai ficar bom o visual, se não nem vai ser utilizado.
+			 Thread.sleep(1000);
+			if (System.getProperty("os.name").contains("Windows")) {
+				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+			}
+	        else {
+	        	Runtime.getRuntime().exec("clear");
+	        }*/
+	            
+			placar.exibePlacar(boneco, palavra, inOut);
 			System.out.printf("\n");
-			placar.exibePlacar(boneco);
 			inOut.setLetras();
 		}
+		placar.exibePlacar(boneco, palavra, inOut);
 		if(this.getFlagVence()){
 			placar.exibeVitoria();
 		}else{

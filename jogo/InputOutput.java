@@ -11,7 +11,7 @@ public class InputOutput {
 	private int RA;
 	private int senha;
 	private char letra;
-	
+
 	public void setValoresUsuario() {  //Falta melhoria para utilizar o Cadastro do Jogador - Em Andamento.
 		Scanner scanNome = new Scanner(System.in);
 		Scanner scanRA = new Scanner(System.in);
@@ -45,6 +45,12 @@ public class InputOutput {
 		}
 	}
 	
+	public boolean validaLetraRepetida(String letrasUtilizadas) {
+		if(letrasUtilizadas.indexOf(this.getLetra()) != -1) {
+			return true;
+		}
+		return false;
+	}
 	
 	public String getNome() {
 		return nome;
