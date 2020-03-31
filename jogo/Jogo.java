@@ -13,10 +13,13 @@ public class Jogo {
 	
 	public Jogo() throws InterruptedException, IOException {
 		InputOutput inOut = new InputOutput();
-		Boneco boneco = new Boneco();
-		Placar placar = new Placar();
-		inOut.setLetras();
-		this.rodaJogo(inOut, placar, boneco);
+		inOut.exibeTelaInicial();
+		inOut.exibeTelaMenu();
+		//Boneco boneco = new Boneco();
+		//Placar placar = new Placar();
+		
+		//inOut.setLetras();
+		//this.rodaJogo(inOut, placar, boneco);
 	}
 	
 	private void rodaJogo(InputOutput inOut, Placar placar, Boneco boneco) throws InterruptedException, IOException {

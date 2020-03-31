@@ -16,6 +16,11 @@ public class Jogador {
 		this.setSenha(senha);
 	}
 	
+	public Jogador(int RA, int senha) {
+		this.setRA(RA);
+		this.setSenha(senha);
+	}
+	
 	public String getNome() {
 		return this.nome;
 	}
