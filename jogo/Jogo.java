@@ -5,29 +5,37 @@
 package com.centuri123.jogo;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Jogo {
 	private boolean flagJogo = true;
 	private boolean flagVence = true; 
 	private boolean flagErro = false;
 	
-	public Jogo() throws InterruptedException, IOException {
+	public Jogo(){
+	
 		InputOutput inOut = new InputOutput();
 		inOut.exibeTelaInicial();
 		inOut.exibeTelaMenu();
-		//Boneco boneco = new Boneco();
-		//Placar placar = new Placar();
-		
-		//inOut.setLetras();
-		//this.rodaJogo(inOut, placar, boneco);
 	}
 	
-	private void rodaJogo(InputOutput inOut, Placar placar, Boneco boneco) throws InterruptedException, IOException {
+	public Jogo(Jogador jogador) throws InterruptedException, IOException {
+		
+		InputOutput inOut = new InputOutput();
+		Boneco boneco = new Boneco();
+		Placar placar = new Placar();
+		
+		inOut.setLetras();
+		this.rodaJogo(inOut, placar, boneco, jogador);
+	}
+	
+	private void rodaJogo(InputOutput inOut, Placar placar, Boneco boneco, Jogador jogador) throws InterruptedException, IOException {
+		
 		int i = 0;
 		char[] palavra = {'T','E','S','T','E'}; //Em andamento classe que recebe do BD as palavras sorteadas.
 		while(this.getFlagJogo()){
 			for(i=0;i<palavra.length;i++){
-				if(palavra[i] == inOut.getLetra()){
+				if(palavra[i] == inOut.getLetra() || palavra[i] == Character.toUpperCase(inOut.getLetra())){ 
 					if(!inOut.validaLetraRepetida(placar.getLetrasUtilizadas())) {
 						this.setFlagErro(true);
 						placar.addQuantAcerto();	
@@ -74,15 +82,26 @@ public class Jogo {
 	        	Runtime.getRuntime().exec("clear");
 	        }*/
 	            
-			placar.exibePlacar(boneco, palavra, inOut);
+			placar.exibePlacar(boneco, palavra, inOut, jogador);
 			System.out.printf("\n");
 			inOut.setLetras();
 		}
-		placar.exibePlacar(boneco, palavra, inOut);
+		placar.exibePlacar(boneco, palavra, inOut, jogador);
 		if(this.getFlagVence()){
 			placar.exibeVitoria();
 		}else{
 			placar.exibeDerrota();
+		}
+		System.out.println("Deseja jogar novamente?: 1 para Reiniciar");
+		Scanner scanJogarNov = new Scanner(System.in);
+		int jogarNov = scanJogarNov.nextInt();
+		if(jogarNov == 1) {
+			Placar novoPlacar = new Placar();
+			Boneco novoBoneco = new Boneco();
+			inOut.limpaLetra();
+			this.rodaJogo(inOut, novoPlacar, novoBoneco, jogador);
+		}else {
+			
 		}
 	}
 

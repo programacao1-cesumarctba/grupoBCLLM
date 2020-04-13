@@ -28,12 +28,7 @@ public class Main {
 		 */
 		
 
-			try {
-				Jogo jogo = new Jogo();
-			} catch (InterruptedException | IOException e) {
-				e.printStackTrace();
-			}
-		// Para testar o Jogo basta retirar esse comentário e executar.
+			Jogo jogo = new Jogo();
 	
 	
 		/*

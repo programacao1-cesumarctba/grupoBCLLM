@@ -8,35 +8,82 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.centuri123.connection.ConnectionFactory;
 import com.centuri123.jogo.Jogador;
 
 
 public class DAO {
 	
-	/*public int selectJogador(int RA) throws ClassNotFoundException{ //Em andamento, vou utilizar ArrayList nesse select.
+	public List<Object> selectJogador() throws ClassNotFoundException{
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		int resultado = 0;
+
+		List<Object> listaJogadores = new ArrayList<Object>();
+
 		String query = "";
+		query += "SELECT j.nome, r.qtd_vit, r.qtd_der, r.pontuacao FROM jogador j, ranking r ";
+		query += "WHERE j.RA = r.RA_aluno";
 		
+		con = ConnectionFactory.getConnection();
+		try {
+			stmt = con.prepareStatement(query);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				listaJogadores.add(rs.getString("nome"));
+				listaJogadores.add(rs.getString("qtd_vit"));
+				listaJogadores.add(rs.getString("qtd_der"));
+				listaJogadores.add(rs.getString("pontuacao"));
+			}
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}finally{
+			ConnectionFactory.closeConnection(con, stmt);
+		}
+		
+		return listaJogadores;
+	}
+	
+	public Jogador selectJogador(int raAluno) throws ClassNotFoundException{ //Em andamento, vou utilizar ArrayList nesse select.
+	//public List<Jogador> selectJogador(int raAluno) throws ClassNotFoundException{ //Em andamento, vou utilizar ArrayList nesse select.
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		//List<Jogador> listaJogadores = new ArrayList<Jogador>();
+		Jogador jogador = new Jogador();
+		//String nome = "";
+		//int RA = 0, senha = 0;
+		
+		String query = "";
 		query += "SELECT * FROM jogador ";
 		query += "WHERE RA = ?";
 		
 		con = ConnectionFactory.getConnection();
 		try {
 			stmt = con.prepareStatement(query);
+			stmt.setInt(1, raAluno);
 			rs = stmt.executeQuery();
 			rs.next();
-			resultado = rs.getInt(RA);
+			//while(rs.next()) {
+				//RA = rs.getInt(1);
+				//nome = rs.getString(2);
+				//senha = rs.getInt(3);
+				jogador.setRA(rs.getInt(1));
+				jogador.setNome(rs.getString(2));
+				jogador.setSenha(rs.getInt(3));
+				//listaJogadores.add(jogador);
+			//}
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}finally{
 			ConnectionFactory.closeConnection(con, stmt);
 		}
-		return resultado;
-	}*/
+		//return resultado;
+		return jogador;
+	}
 	
 	public void insertJogador(Jogador jogador) throws ClassNotFoundException{
 		Connection con = null;

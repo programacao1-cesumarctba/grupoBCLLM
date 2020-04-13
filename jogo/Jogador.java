@@ -10,6 +10,10 @@ public class Jogador {
 	private String nome;
 	private int senha;
 	
+	public Jogador() {
+		
+	}
+	
 	public Jogador(int RA, String nome, int senha) {
 		this.setNome(nome);
 		this.setRA(RA);
