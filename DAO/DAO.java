@@ -24,9 +24,8 @@ public class DAO {
 
 		List<Object> listaJogadores = new ArrayList<Object>();
 
-		String query = "";
-		query += "SELECT j.nome, r.qtd_vit, r.qtd_der, r.pontuacao FROM jogador j, ranking r ";
-		query += "WHERE j.RA = r.RA_aluno";
+		String query =  "SELECT j.nome, r.qtd_vit, r.qtd_der, r.pontuacao FROM jogador j, ranking r ";
+			   query += "WHERE j.RA = r.RA_aluno AND j.RA IS NOT NULL AND r.RA_aluno IS NOT NULL";
 		
 		con = ConnectionFactory.getConnection();
 		try {
@@ -47,49 +46,46 @@ public class DAO {
 		return listaJogadores;
 	}
 	
-	public Jogador selectJogador(int raAluno) throws ClassNotFoundException{ //Em andamento, vou utilizar ArrayList nesse select.
-	//public List<Jogador> selectJogador(int raAluno) throws ClassNotFoundException{ //Em andamento, vou utilizar ArrayList nesse select.
+	public Jogador selectJogador(int raAluno) throws ClassNotFoundException{
+		
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		//List<Jogador> listaJogadores = new ArrayList<Jogador>();
 		Jogador jogador = new Jogador();
-		//String nome = "";
-		//int RA = 0, senha = 0;
 		
-		String query = "";
-		query += "SELECT * FROM jogador ";
-		query += "WHERE RA = ?";
+
+		String  query =  "SELECT * FROM jogador ";
+				query += "WHERE RA = ?";
 		
 		con = ConnectionFactory.getConnection();
 		try {
 			stmt = con.prepareStatement(query);
 			stmt.setInt(1, raAluno);
 			rs = stmt.executeQuery();
-			rs.next();
-			//while(rs.next()) {
-				//RA = rs.getInt(1);
-				//nome = rs.getString(2);
-				//senha = rs.getInt(3);
+			if(rs.next()){
 				jogador.setRA(rs.getInt(1));
 				jogador.setNome(rs.getString(2));
 				jogador.setSenha(rs.getInt(3));
-				//listaJogadores.add(jogador);
-			//}
+			}
+			else {
+				jogador = null;
+			}
+			
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}finally{
 			ConnectionFactory.closeConnection(con, stmt);
 		}
-		//return resultado;
 		return jogador;
 	}
 	
 	public void insertJogador(Jogador jogador) throws ClassNotFoundException{
+		
 		Connection con = null;
 		PreparedStatement stmt = null;
 
-		String query = "INSERT INTO jogador(RA,nome,senha)" + " VALUES(?,?,?)";
+		String query =  "INSERT INTO jogador(RA, nome, senha) ";
+			   query += "VALUES(?,?,?)";
 		
 		con = ConnectionFactory.getConnection();
 		try {
@@ -99,22 +95,43 @@ public class DAO {
 			stmt.setInt(3, jogador.getSenha());
 			stmt.execute();
 			
-		} catch (SQLException ex) {
+		}catch (SQLException ex) {
 			ex.printStackTrace();
 			
-		} finally{
+		}finally{
 			ConnectionFactory.closeConnection(con,stmt);
 		}
 	}
 	
-	public void deleteJogador(Jogador jogador) throws ClassNotFoundException{
+	public void createRankingJogador(int raAluno) throws ClassNotFoundException {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		
-		String query = "";
-		      
-		query += "DELETE FROM jogador ";
-		query += "WHERE RA = ?";
+		String query =  "INSERT INTO ranking(qtd_vit, qtd_der, pontuacao, RA_aluno) ";
+			   query += "VALUES(?,?,?,?)";
+		
+		con = ConnectionFactory.getConnection();
+		try {
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, 0);
+			stmt.setInt(2, 0);
+			stmt.setInt(3, 0);
+			stmt.setInt(4, raAluno);
+			stmt.execute();
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}finally {
+			ConnectionFactory.closeConnection(con, stmt);
+		}
+	}
+	
+	private void deleteJogador(Jogador jogador) throws ClassNotFoundException{
+		
+		Connection con = null;
+		PreparedStatement stmt = null;
+		
+		String query =  "DELETE FROM jogador ";
+		       query += "WHERE RA = ?";
 		
 		con = ConnectionFactory.getConnection();
 		try {
@@ -130,15 +147,14 @@ public class DAO {
 		}
 	}
 	
-	public void updateJogador(Jogador jogador, int senha) throws ClassNotFoundException{
+	private void updateJogador(Jogador jogador, int senha) throws ClassNotFoundException{
+		
 		Connection con = null;
 		PreparedStatement stmt = null;
-		
-		String query = ""; 
 				
-		query += "UPDATE jogador ";
-		query += "SET senha = ? ";
-		query += "WHERE RA = ?";
+		String query = "UPDATE jogador ";
+			   query += "SET senha = ? ";
+		       query += "WHERE RA = ?";
 		
 		con = ConnectionFactory.getConnection();
 		try {
@@ -156,27 +172,91 @@ public class DAO {
 	}
 	
 	public int getCountPalavras() throws ClassNotFoundException{
+		
 		int countRegistros = 0;
 		Connection con = null;
 		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		String query = ""; 
-				
-		query += "SELECT count(id) as qtd FROM palavras ";
+		ResultSet rs = null;	
+		
+		String query =  "SELECT count(id) as qtd ";
+			   query += "FROM palavras";
 		
 		con = ConnectionFactory.getConnection();
 		try {
 			stmt = con.prepareStatement(query);
 			rs = stmt.executeQuery();
-			rs.next();
-			countRegistros = rs.getInt("qtd");
+			if(rs.next()) {
+				countRegistros = rs.getInt("qtd");
+			}
+			
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 			
 		}finally {
 			ConnectionFactory.closeConnection(con, stmt);
-		}		
+		}
+		
+		
 		return countRegistros;
 	}
+	
+	public char[] selectPalavra(int idSorteado) throws ClassNotFoundException {
+		
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		char[] palavra = null;
+		String aux = "";
+
+		String query = "SELECT palavra FROM palavras ";
+		       query += "WHERE id = ? AND id IS NOT NULL ";
+		
+		con = ConnectionFactory.getConnection();
+		try {
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1,idSorteado);
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				aux = rs.getString(1);
+				palavra = aux.toCharArray();
+			}
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+			
+		}finally {
+			ConnectionFactory.closeConnection(con, stmt);
+		}
+		return palavra;
+	}
+
+	public String selectDica(int idSorteado) throws ClassNotFoundException {
+		
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String dica = "";
+		 
+		String query =  "SELECT dica FROM dica_palavras ";
+		       query += "WHERE id_palavra = ? AND id_palavra IS NOT NULL ";
+		
+		con = ConnectionFactory.getConnection();
+		try {
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1,idSorteado);
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				dica = rs.getString(1);
+			}
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+			
+		}finally {
+			ConnectionFactory.closeConnection(con, stmt);
+		}
+		return dica;
+	}
+	
 }
 

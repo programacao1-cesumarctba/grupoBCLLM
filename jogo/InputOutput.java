@@ -25,27 +25,32 @@ public class InputOutput {
 		System.out.println("+          Digite seu nome:           +");
 		nome = scanNome.next();
 		System.out.println("+          Digite seu RA:             +");
-		RA = scanRA.nextInt();
+		RA = this.validaInteiro();
+		if(RA == 0) {
+			this.exibeTelaErro(3);
+		}
 		System.out.println("+          Digite sua senha:          +");
-		senha = scanSenha.nextInt();
+		senha = this.validaInteiro();
+		if(senha == 0) {
+			this.exibeTelaErro(3);
+		}
 		this.carregaBordas(2);
 		Jogador jogador = new Jogador(RA, nome, senha);
 		
 		try {
 			dao.insertJogador(jogador);
+			dao.createRankingJogador(RA);
+			
 		} catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
 		}
-		this.destructScan(scanNome);
-		this.destructScan(scanRA);
-		this.destructScan(scanSenha);
 	}
 	
 	public void exibeTelaInicial() {
 		this.carregaBordas(1);
 		System.out.println("+            JOGO DA FORCA            +");
 		this.carregaBordas(2);
-		limparTela();
+		limparTela(2000);
 	
 	}
 	
@@ -66,19 +71,20 @@ public class InputOutput {
 				opcaoCorreta = false;
 			}
 		}
+		
 		switch(opc) {
 			case 1:
-				limparTela();
+				limparTela(2000);
 				this.exibeTelaLogin();
 				break;
 			case 2: 
-				limparTela();
+				limparTela(2000);
 				this.cadastraJogador();
-				limparTela();
+				limparTela(2000);
 				this.exibeCadastrado();
 				break;
 			case 3:
-				limparTela();
+				limparTela(2000);
 				this.exibeTelaRanking();
 				break;
 			case 4:
@@ -90,71 +96,101 @@ public class InputOutput {
 	
 	public void exibeTelaRanking() {
 		List<Object> listaDados = new ArrayList<Object>();
+		
 		int count = 0;
+		
 		
 		DAO dao = new DAO();
 		this.carregaBordas(3);
 		try {
 			listaDados = dao.selectJogador();
 			if(listaDados != null && !listaDados.isEmpty()) {
-				System.out.println("+  Nome        Vit.     Der.   Pont.  +");
+				System.out.println("+ Nome                 Vitórias                Derrótas               Pontuação   +");
 				for(Object x : listaDados) {
 					if(count != 4) {
-						System.out.print("  " + x + "\t");
+						System.out.printf("  %-22.20s", x.toString());//
+						//System.out.print("    " + x + "\t\t");
 						count++;
 					}else {
-						System.out.print("\n" + " " + x + "\t");
+						System.out.printf("\n  %-22.20s", x.toString());
 						count = 0;
 					}
 				}
-				System.out.print("\n");
+				System.out.printf("\n");
 				this.carregaBordas(4);
+				System.out.printf("                              1 - Voltar Menu Principal;                        \n");
+				Scanner scanVoltar = new Scanner(System.in);
+				char opcVoltar;
+				opcVoltar = scanVoltar.next().charAt(0);
+				while(true){
+					if(opcVoltar != '1') {
+						opcVoltar = scanVoltar.next().charAt(0);
+					}else {
+						break;
+					}
+				}
+				limparTela(200);
+				this.exibeTelaMenu();
 			}else {
-				System.out.println("+-------------------------------------+");
+				System.out.println("+---------------------------------------------------------------------------------+");
 				this.carregaBordas(4);
+				System.out.printf("                              1 - Voltar Menu Principal;                        \n");
+				Scanner scanVoltar = new Scanner(System.in);
+				char opcVoltar;
+				opcVoltar = scanVoltar.next().charAt(0);
+				while(true){
+					if(opcVoltar != '1') {
+						opcVoltar = scanVoltar.next().charAt(0);
+					}else {
+						break;
+					}
+				}
+				limparTela(200);
+				this.exibeTelaMenu();
 			}
 
 		}catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
 		}
-		
-		//this.carregaBordas(2);
 	}
 	
-	public void exibeTelaLogin() {// -- Em andamento
+	public void exibeTelaLogin() {
 		Scanner scanRA = new Scanner(System.in);
 		Scanner scanSenha = new Scanner(System.in);
 		int RA, senha;
 		Jogador jogador = new Jogador();
-		//List<Jogador> lista = new ArrayList<Jogador>();
 		DAO dao = new DAO();
 		
 		this.carregaBordas(1);
 		System.out.println("+    Digite seu RA:                   +");
-		RA = scanRA.nextInt();
+		RA = this.validaInteiro();
+		if(RA == 0) {
+			this.exibeTelaErro(3);
+		}
 
 		try {
 			jogador = dao.selectJogador(RA);
 			if(jogador != null ){ //&& !jogador.isEmpty(){
 				System.out.println("+    Digite sua Senha:                +");
-				senha = scanSenha.nextInt();
-				//for(Jogador jogador : lista) {
+				senha = this.validaInteiro();
+				if(senha == 0) {
+					this.exibeTelaErro(3);
+				}
 				if(jogador.getSenha() == senha) {
-					//System.out.println("Nome: " + jogador.getNome());
-					//System.out.println("RA: " + jogador.getRA());
-					//System.out.println("Senha: " + jogador.getSenha());
 					Jogo continuacaoJogo = new Jogo(jogador);
 					
 				}else {
-					limparTela();
+					limparTela(2000);
 					this.exibeTelaErro(2);
-					limparTela();
+					limparTela(2000);
 					this.exibeTelaLogin();
 				}
-				//}
+
 			}else {
-				limparTela();
+				limparTela(2000);
 				this.exibeTelaErro(1);
+				limparTela(2000);
+				this.exibeTelaLogin();
 			}
 			
 		} catch (ClassNotFoundException | InterruptedException | IOException ex) {
@@ -175,8 +211,13 @@ public class InputOutput {
 				System.out.println("+            Senha inválida           +");
 				this.carregaBordas(2);
 				break;
-				
 			default:
+				limparTela(500);
+				this.carregaBordas(1);
+				System.out.println("+  ERRO! Somente números são aceitos  +");
+				this.carregaBordas(2);
+				limparTela(500);
+				System.exit(0);
 				break;
 		}
 	}
@@ -197,12 +238,12 @@ public class InputOutput {
 				System.out.println("+=====================================+");		
 				break;
 			case 3:
-				System.out.println("+=====================================+");
-				System.out.println("+           Ranking Jogadores         +");
-				System.out.println("+=====================================+");
+				System.out.println("+=================================================================================+");
+				System.out.println("+                                 Ranking Jogadores                               +");
+				System.out.println("+=================================================================================+");
 				break;
 			case 4:
-				System.out.println("+=====================================+");
+				System.out.println("+=================================================================================+");
 				break;
 			default:
 				break;
@@ -213,10 +254,10 @@ public class InputOutput {
 		this.carregaBordas(1);
 		System.out.println("+    Usuário cadastrado com sucesso   +");
 		this.carregaBordas(2);
-		limparTela();
+		limparTela(2000);
 	}
 	
-	public static void limparTela(){
+	public static void limparTela(int tempo){
 		try {
 			Thread.sleep(2000);
 			if (System.getProperty("os.name").contains("Windows")) {
@@ -249,6 +290,31 @@ public class InputOutput {
 		}
 	}
 	
+	public char verificaJogarNovamente() {
+		System.out.println("Deseja jogar novamente?: 1 para Reiniciar");
+		Scanner scanJogarNov = new Scanner(System.in);
+		char jogarNov = scanJogarNov.next().charAt(0);
+		
+		return jogarNov;
+	}
+	
+	public void notificaSaida() {
+		System.out.println("Obrigado por jogar !!");
+		System.exit(0);
+	}
+	
+	public int validaInteiro() {
+		Scanner scanInt = new Scanner(System.in);
+		int valor;
+		if(scanInt.hasNextInt()) {
+			valor = scanInt.nextInt();
+			return valor;
+		}else {
+			return 0;
+		}
+		
+	}
+	
 	public boolean validaLetraRepetida(String letrasUtilizadas) {
 		if(letrasUtilizadas.indexOf(Character.toUpperCase(this.getLetra())) != -1) {
 			return true;
@@ -260,8 +326,12 @@ public class InputOutput {
 		return this.letra;
 	}
 	
-	private void destructScan(Scanner scan) {
-		scan.close();
-	}
+	/**
+	 * Foi pesquisado que ao dar um close no obj da classe Scanner, é fechado o System.in que por sinal é a Entrada padrão para o console
+	 * e assim é lançada uma Exception.
+	 */
+	//private void destructScan(Scanner scan) {   
+	//	scan.close();
+	//}
 	
 }

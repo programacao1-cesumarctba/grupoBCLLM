@@ -5,7 +5,6 @@
 package com.centuri123.jogo;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class Jogo {
 	private boolean flagJogo = true;
@@ -24,25 +23,34 @@ public class Jogo {
 		InputOutput inOut = new InputOutput();
 		Boneco boneco = new Boneco();
 		Placar placar = new Placar();
-		
-		inOut.setLetras();
-		this.rodaJogo(inOut, placar, boneco, jogador);
+		Palavra palavras = new Palavra();
+		InputOutput.limparTela(1000);
+		//inOut.setLetras();
+		this.rodaJogo(inOut, placar, boneco, jogador, palavras);
 	}
 	
-	private void rodaJogo(InputOutput inOut, Placar placar, Boneco boneco, Jogador jogador) throws InterruptedException, IOException {
+	private void rodaJogo(InputOutput inOut, Placar placar, Boneco boneco, Jogador jogador, Palavra palavras) throws InterruptedException, IOException {
 		
 		int i = 0;
-		char[] palavra = {'T','E','S','T','E'}; //Em andamento classe que recebe do BD as palavras sorteadas.
+		char[] palavraSorteada;
+		
+		palavras.sorteiaPalavra();
+		palavraSorteada = palavras.getPalavra();
+		placar.exibePlacar(boneco, palavraSorteada, jogador, palavras);
+		
+		inOut.setLetras();
+		InputOutput.limparTela(100);
+		//char[] palavra = {'T','E','S','T','E'}; //Substituido por palavra dinâmica sorteada com o ID do BD
 		while(this.getFlagJogo()){
-			for(i=0;i<palavra.length;i++){
-				if(palavra[i] == inOut.getLetra() || palavra[i] == Character.toUpperCase(inOut.getLetra())){ 
+			for(i=0;i<palavraSorteada.length;i++){
+				if(palavraSorteada[i] == inOut.getLetra() || palavraSorteada[i] == Character.toUpperCase(inOut.getLetra())){ 
 					if(!inOut.validaLetraRepetida(placar.getLetrasUtilizadas())) {
 						this.setFlagErro(true);
 						placar.addQuantAcerto();	
 					}
 					
 				}else{
-					if((i == (palavra.length-1)) && !(this.getFlagErro())){
+					if((i == (palavraSorteada.length-1)) && !(this.getFlagErro())){
 						if(!inOut.validaLetraRepetida(placar.getLetrasUtilizadas())) {
 							placar.addQuantErro();
 							boneco.removeVida();
@@ -67,42 +75,45 @@ public class Jogo {
 			if(placar.getQuantErro() > 0){
 				inOut.exibeBoneco(boneco);
 			}
-			if(placar.getQuantAcerto() == palavra.length){
+			if(placar.getQuantAcerto() == palavraSorteada.length){
 				break;
 			}else if(boneco.getVida() == 0){
 				this.setFlagVence(false);
 				break;
 			}
-			/*Limpa cmd com timeout de 1000 milisegundos - Testando se vai ficar bom o visual, se não nem vai ser utilizado.
+			/*Limpa cmd com timeout de 1000 milisegundos - Implementado na Classe InputOutput no método static - LimparTela(tempo).
 			 Thread.sleep(1000);
 			if (System.getProperty("os.name").contains("Windows")) {
 				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 			}
 	        else {
 	        	Runtime.getRuntime().exec("clear");
-	        }*/
+	        //}*/
 	            
-			placar.exibePlacar(boneco, palavra, inOut, jogador);
+			placar.exibePlacar(boneco, palavraSorteada, inOut, jogador, palavras);
 			System.out.printf("\n");
 			inOut.setLetras();
+			InputOutput.limparTela(100);
 		}
-		placar.exibePlacar(boneco, palavra, inOut, jogador);
+		placar.exibePlacar(boneco, palavraSorteada, inOut, jogador, palavras);
 		if(this.getFlagVence()){
 			placar.exibeVitoria();
+			InputOutput.limparTela(3500);
 		}else{
 			placar.exibeDerrota();
+			InputOutput.limparTela(3500);
 		}
-		System.out.println("Deseja jogar novamente?: 1 para Reiniciar");
-		Scanner scanJogarNov = new Scanner(System.in);
-		int jogarNov = scanJogarNov.nextInt();
-		if(jogarNov == 1) {
+		char jogarNov = inOut.verificaJogarNovamente();
+		if(jogarNov == '1') {
 			Placar novoPlacar = new Placar();
 			Boneco novoBoneco = new Boneco();
 			inOut.limpaLetra();
-			this.rodaJogo(inOut, novoPlacar, novoBoneco, jogador);
+			InputOutput.limparTela(500);
+			this.rodaJogo(inOut, novoPlacar, novoBoneco, jogador, palavras);
 		}else {
-			
-		}
+			inOut.notificaSaida();
+		}	
+
 	}
 
 	
