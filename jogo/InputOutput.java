@@ -88,8 +88,10 @@ public class InputOutput {
 				this.exibeTelaRanking();
 				break;
 			case 4:
-				Palavra palavra = new Palavra();
-				palavra.sorteiaPalavra();
+				//Palavra palavra = new Palavra();
+				//palavra.sorteiaPalavra();
+				//Placar placar = new Placar();
+				//placar.salvaPontuacao();
 				break;
 		}
 	}
@@ -105,7 +107,7 @@ public class InputOutput {
 		try {
 			listaDados = dao.selectJogador();
 			if(listaDados != null && !listaDados.isEmpty()) {
-				System.out.println("+ Nome                 Vitórias                Derrótas               Pontuação   +");
+				System.out.println("+ Nome                 Vitórias                Derrotas               Pontuação   +");
 				for(Object x : listaDados) {
 					if(count != 4) {
 						System.out.printf("  %-22.20s", x.toString());//

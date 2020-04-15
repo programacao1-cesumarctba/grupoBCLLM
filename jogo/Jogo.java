@@ -25,7 +25,6 @@ public class Jogo {
 		Placar placar = new Placar();
 		Palavra palavras = new Palavra();
 		InputOutput.limparTela(1000);
-		//inOut.setLetras();
 		this.rodaJogo(inOut, placar, boneco, jogador, palavras);
 	}
 	
@@ -37,7 +36,7 @@ public class Jogo {
 		palavras.sorteiaPalavra();
 		palavraSorteada = palavras.getPalavra();
 		placar.exibePlacar(boneco, palavraSorteada, jogador, palavras);
-		
+		placar.InicializaPontuacao();
 		inOut.setLetras();
 		InputOutput.limparTela(100);
 		//char[] palavra = {'T','E','S','T','E'}; //Substituido por palavra dinâmica sorteada com o ID do BD
@@ -46,13 +45,15 @@ public class Jogo {
 				if(palavraSorteada[i] == inOut.getLetra() || palavraSorteada[i] == Character.toUpperCase(inOut.getLetra())){ 
 					if(!inOut.validaLetraRepetida(placar.getLetrasUtilizadas())) {
 						this.setFlagErro(true);
-						placar.addQuantAcerto();	
+						placar.addQuantAcerto();
+						placar.addPontuacao();
 					}
 					
 				}else{
 					if((i == (palavraSorteada.length-1)) && !(this.getFlagErro())){
 						if(!inOut.validaLetraRepetida(placar.getLetrasUtilizadas())) {
 							placar.addQuantErro();
+							placar.remPontuacao();
 							boneco.removeVida();
 						}
 						if(placar.getQuantErro() == 1){
@@ -97,20 +98,25 @@ public class Jogo {
 		}
 		placar.exibePlacar(boneco, palavraSorteada, inOut, jogador, palavras);
 		if(this.getFlagVence()){
+			placar.addVit();
 			placar.exibeVitoria();
 			InputOutput.limparTela(3500);
 		}else{
+			placar.addDer();
 			placar.exibeDerrota();
 			InputOutput.limparTela(3500);
 		}
 		char jogarNov = inOut.verificaJogarNovamente();
 		if(jogarNov == '1') {
+			placar.salvaPontuacao(jogador);
 			Placar novoPlacar = new Placar();
 			Boneco novoBoneco = new Boneco();
 			inOut.limpaLetra();
 			InputOutput.limparTela(500);
 			this.rodaJogo(inOut, novoPlacar, novoBoneco, jogador, palavras);
 		}else {
+			placar.salvaPontuacao(jogador);
+			InputOutput.limparTela(500);
 			inOut.notificaSaida();
 		}	
 

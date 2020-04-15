@@ -4,9 +4,17 @@
 
 package com.centuri123.jogo;
 
+import java.util.List;
+
+import com.centuri123.DAO.DAO;
+
 public class Placar {
 	private int quantErro;
 	private int	quantAcerto;
+	private int vit = 0;
+	private int der = 0;
+	private int pontuacao = 0;
+	private List<Integer> valores;
 	private char[] palavraAux = new char[50];
 	private String letrasUtilizadas;
 	
@@ -41,7 +49,7 @@ public class Placar {
 			}
 		}
 		
-		System.out.printf("\n\nJogador: %s    Acertos: %d     Vida Rest.: %d    ", jogador.getNome(), this.getQuantAcerto(), boneco.getVida());
+		System.out.printf("\n\nJogador: %s    Pontuação Atual: %d     Vida Rest.: %d    ", jogador.getNome(), this.getPontuacao(), boneco.getVida());
 		System.out.printf("\n\nDica da Palavra: %s", objPalavra.getDica());
 		System.out.printf("\n\nLetras Utilizadas: %s \n", this.getLetrasUtilizadas());
 		//System.out.printf("\nQuantidade Acertos: %d\n", this.getQuantAcerto());
@@ -55,7 +63,7 @@ public class Placar {
 		for(i=0;i<palavraSorteada.length;i++) {
 			System.out.printf("%c", this.palavraAux[i]);
 		}
-		System.out.printf("\n\nJogador: %s    Acertos: %d     Vida Rest.: %d    ", jogador.getNome(), this.getQuantAcerto(), boneco.getVida());
+		System.out.printf("\n\nJogador: %s    Pontuação Atual: %d     Vida Rest.: %d    ", jogador.getNome(), this.getPontuacao(), boneco.getVida());
 		System.out.printf("\n\nDica da Palavra: %s", objPalavra.getDica());
 		System.out.printf("\n\nLetras Utilizadas: %s \n\n", this.getLetrasUtilizadas());		
 	}
@@ -82,6 +90,66 @@ public class Placar {
 	
 	public void addQuantAcerto() {
 		this.quantAcerto++;
+	}
+	
+	public int getPontuacao() {
+		return this.pontuacao;
+	}
+	
+	public void setVit() {
+		this.vit = this.valores.get(0);
+	}
+
+	public void setDer() {
+		this.der = this.valores.get(1);
+	}
+	
+	public void setPontuacao() {
+		this.pontuacao = this.valores.get(2);
+	}
+	
+	public void addVit() {
+		this.vit++;
+	}
+	
+	public void addDer() {
+		this.der++;
+	}
+	
+	public void addPontuacao() {
+		this.pontuacao += 10;
+	}
+	
+	public void remPontuacao() {
+		if(this.pontuacao >= 5) {
+			this.pontuacao -= 5;
+		}
+	}
+	
+	public void InicializaPontuacao() {
+		DAO dao = new DAO();
+		try {
+			this.valores = dao.selectPontuacao(14545);
+			this.setVit();
+			this.setDer();
+			this.setPontuacao();
+			
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		
+	}
+	
+	public void salvaPontuacao(Jogador jogador) {
+		DAO dao = new DAO();
+		
+		try {
+			dao.insertPontuacao(jogador.getRA(), this.vit, this.der, this.pontuacao);
+			
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		
 	}
 	
 	public void setLetrasUtilizadas(char letra) {

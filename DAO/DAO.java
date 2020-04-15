@@ -258,5 +258,56 @@ public class DAO {
 		return dica;
 	}
 	
+	public List<Integer> selectPontuacao(int raAluno) throws ClassNotFoundException {
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<Integer> valores = new ArrayList<Integer>();
+		
+		String query =  "SELECT qtd_vit, qtd_der, pontuacao FROM ranking ";
+			   query += "WHERE RA_aluno = ? AND RA_aluno IS NOT NULL";
+		
+		con = ConnectionFactory.getConnection();
+		try {
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, raAluno);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				valores.add(0, rs.getInt(1));
+				valores.add(1, rs.getInt(2));
+				valores.add(2, rs.getInt(3));
+			}
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}finally{
+			ConnectionFactory.closeConnection(con, stmt);
+		}
+		return valores;
+	}
+	
+	public void insertPontuacao(int raAluno, int vit, int der, int pontuacao) throws ClassNotFoundException {
+		Connection con = null;
+		PreparedStatement stmt = null;
+		
+		String query  = "UPDATE ranking ";
+			   query += "SET qtd_vit = ?, qtd_der = ?, pontuacao = ? ";
+			   query += "WHERE RA_aluno = ?";
+	
+	   con = ConnectionFactory.getConnection();
+	   try {
+		   stmt = con.prepareStatement(query);
+		   stmt.setInt(1, vit);
+		   stmt.setInt(2, der);
+		   stmt.setInt(3, pontuacao);
+		   stmt.setInt(4, raAluno);
+		   stmt.execute();
+	   }catch(SQLException ex) {
+		   ex.printStackTrace();
+	   }finally {
+		   ConnectionFactory.closeConnection(con, stmt);
+	   }
+	}
+	
 }
 
