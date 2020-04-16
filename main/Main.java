@@ -20,7 +20,7 @@ public class Main {
 		 * 
 		 *  - Implementar a Tela do Jogo para a parte Cadastral do Jogador; - Feito.
 		 *  - Implementar o Menu do Jogo - Feito;
-		 *  - Melhorar Tela do Jogo com _ _ _ _ _ _ da palavra sorteada - Feito para o caso Estático - Feito;
+		 *  - Melhorar Tela do Jogo com _ _ _ _ _ _ da palavra sorteada - Feito;
 		 *  - Implementar a criptografia dos dados cadastrais;
 		 *  - Implementar a Classe que recebe do BD as pré selecionadas que serão sorteadas - Feito;
 		 *  - Implementar Ranking dos Jogadores utilizando a Tabela do BD - Feito.

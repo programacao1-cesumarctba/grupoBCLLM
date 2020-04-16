@@ -11,18 +11,6 @@ public class Palavra {
 		this.idSorteadoAnt = 0;
 	}
 	
-	public char[] getPalavra() {
-		return this.palavra;
-	}
-	
-	public String getDica() {
-		return this.dica;
-	}
-
-	public void setPalavra(char[] palavra) {
-		this.palavra = palavra;
-	}
-	
 	public void sorteiaPalavra(){
 		DAO dao = new DAO();
 		int i = 0;
@@ -56,5 +44,13 @@ public class Palavra {
 		//		e.printStackTrace();
 		//	 }
 		
+	}
+	
+	public char[] getPalavra() {
+		return this.palavra;
+	}
+	
+	public String getDica() {
+		return this.dica;
 	}
 }

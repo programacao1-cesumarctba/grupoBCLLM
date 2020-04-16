@@ -36,7 +36,7 @@ public class Jogo {
 		palavras.sorteiaPalavra();
 		palavraSorteada = palavras.getPalavra();
 		placar.exibePlacar(boneco, palavraSorteada, jogador, palavras);
-		placar.InicializaPontuacao();
+		placar.inicializaPontuacao();
 		inOut.setLetras();
 		InputOutput.limparTela(100);
 		//char[] palavra = {'T','E','S','T','E'}; //Substituido por palavra dinâmica sorteada com o ID do BD
@@ -127,7 +127,7 @@ public class Jogo {
 		return this.flagJogo;
 	}
 	
-	public void setFlagjogo(boolean flagJogo) {
+	private void setFlagjogo(boolean flagJogo) {
 		this.flagJogo = flagJogo;
 	}
 	
@@ -135,7 +135,7 @@ public class Jogo {
 		return this.flagErro;
 	}
 	
-	public void setFlagErro(boolean flagErro) {
+	private void setFlagErro(boolean flagErro) {
 		this.flagErro = flagErro;
 	}
 	
@@ -143,7 +143,7 @@ public class Jogo {
 		return this.flagVence;
 	}
 	
-	public void setFlagVence(boolean flagVence) {
+	private void setFlagVence(boolean flagVence) {
 		this.flagVence = flagVence;
 	}
 }

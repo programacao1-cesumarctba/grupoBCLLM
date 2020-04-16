@@ -30,6 +30,20 @@ public class Placar {
 		}
 	}
 	
+	public void inicializaPontuacao() {
+		DAO dao = new DAO();
+		try {
+			this.valores = dao.selectPontuacao(14545);
+			this.setVit();
+			this.setDer();
+			this.setPontuacao();
+			
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		
+	}	
+	
 	public void exibePlacar(Boneco boneco, char[] palavraSorteada, InputOutput inOut, Jogador jogador, Palavra objPalavra) {
 		int i;
 		if(!inOut.validaLetraRepetida(this.getLetrasUtilizadas())) {
@@ -75,9 +89,29 @@ public class Placar {
 	public void exibeDerrota() {
 		System.out.println("Você Perdeu");
 	}
+	
+	public void salvaPontuacao(Jogador jogador) {
+		DAO dao = new DAO();
+		
+		try {
+			dao.insertPontuacao(jogador.getRA(), this.vit, this.der, this.pontuacao);
+			
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		
+	}	
 
 	public int getQuantErro() {
 		return quantErro;
+	}
+	
+	private void setQuantErro() {
+		this.quantErro = 0;
+	}
+	
+	private void setQuantAcerto() {
+		this.quantAcerto = 0;
 	}
 	
 	public void addQuantErro() {
@@ -126,32 +160,6 @@ public class Placar {
 		}
 	}
 	
-	public void InicializaPontuacao() {
-		DAO dao = new DAO();
-		try {
-			this.valores = dao.selectPontuacao(14545);
-			this.setVit();
-			this.setDer();
-			this.setPontuacao();
-			
-		} catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
-		}
-		
-	}
-	
-	public void salvaPontuacao(Jogador jogador) {
-		DAO dao = new DAO();
-		
-		try {
-			dao.insertPontuacao(jogador.getRA(), this.vit, this.der, this.pontuacao);
-			
-		} catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
-		}
-		
-	}
-	
 	public void setLetrasUtilizadas(char letra) {
 		this.letrasUtilizadas += Character.toUpperCase(letra);
 	}
@@ -160,13 +168,7 @@ public class Placar {
 		return this.letrasUtilizadas;
 	}
 	
-	private void setQuantErro() {
-		this.quantErro = 0;
-	}
-	
-	private void setQuantAcerto() {
-		this.quantAcerto = 0;
-	}
+
 	
 	private void limpaLetrasUtilizadas() {
 		this.letrasUtilizadas = " ";

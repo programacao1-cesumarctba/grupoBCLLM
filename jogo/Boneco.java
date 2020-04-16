@@ -32,7 +32,7 @@ public class Boneco {
 		return this.vida;
 	}
 
-	public void setVida(int num){
+	private void setVida(int num){
 		this.vida -= num;
 	}
 	
