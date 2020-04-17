@@ -8,7 +8,7 @@ Para rodar o jogo pelo cmd é necessário:
 - Criar uma conexão local com as tabelas necessárias criadas no Banco de dados;
 - Inserir as palavras e dicas nas tabelas palavras e dicas_palavras.
 ----------------------------------------
-/----------------------------------------/
+----------------------------------------
 Para rodar o jogo pelo Eclipse 
 ----------------------------------------
 - Criar uma conexão local com as tabelas necessárias criadas no Banco de dados;
