@@ -30,10 +30,10 @@ public class Placar {
 		}
 	}
 	
-	public void inicializaPontuacao() {
+	public void inicializaPontuacao(int raAluno) {
 		DAO dao = new DAO();
 		try {
-			this.valores = dao.selectPontuacao(14545);
+			this.valores = dao.selectPontuacao(raAluno);
 			this.setVit();
 			this.setDer();
 			this.setPontuacao();

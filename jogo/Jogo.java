@@ -36,7 +36,7 @@ public class Jogo {
 		palavras.sorteiaPalavra();
 		palavraSorteada = palavras.getPalavra();
 		placar.exibePlacar(boneco, palavraSorteada, jogador, palavras);
-		placar.inicializaPontuacao();
+		placar.inicializaPontuacao(jogador.getRA());
 		inOut.setLetras();
 		InputOutput.limparTela(100);
 		//char[] palavra = {'T','E','S','T','E'}; //Substituido por palavra dinâmica sorteada com o ID do BD
