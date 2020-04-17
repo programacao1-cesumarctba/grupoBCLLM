@@ -3,14 +3,14 @@ CREATE TABLE jogador (
   nome varchar(50) NOT NULL,
   senha varchar(8) NOT NULL,
   PRIMARY KEY (RA)
-)
+);
 
 
 CREATE TABLE palavras (
   id int(11) NOT NULL AUTO_INCREMENT,
   palavra varchar(50) DEFAULT NULL,
   PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE dica_palavras (
   id_dica int(11) NOT NULL AUTO_INCREMENT,
@@ -18,8 +18,8 @@ CREATE TABLE dica_palavras (
   dica varchar(100) NOT NULL,
   PRIMARY KEY (id_dica),
   KEY id_palavra (id_palavra),
-  CONSTRAINT dica_palavras_ibfk_1 FOREIGN KEY (id_palavra) REFERENCES palavras (id),
-)
+  CONSTRAINT dica_palavras_ibfk_1 FOREIGN KEY (id_palavra) REFERENCES palavras (id)
+);
 
 CREATE TABLE ranking (
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -28,6 +28,6 @@ CREATE TABLE ranking (
   pontuacao int(11) NOT NULL,
   RA_aluno int(11) DEFAULT NULL,
   PRIMARY KEY (id),
-  KEY `RA_aluno (RA_aluno),
+  KEY RA_aluno (RA_aluno),
   CONSTRAINT ranking_ibfk_1 FOREIGN KEY (RA_aluno) REFERENCES jogador (RA)
-)
+);
