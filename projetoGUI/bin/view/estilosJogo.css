@@ -1,0 +1,16 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.telaJogo{
+	-fx-background-color: #2DABDA;
+	-fx-font-size: 38px;
+	-fx-font-family: century;
+	-fx-text-fill: white;
+}
+
+.btnMenu{
+	-fx-font-size: 18px;
+}
+
+.label-input{
+	-fx-font-size:28px;
+}
+
