@@ -27,18 +27,18 @@
             <String fx:value="telaJogo" />
          </styleClass>
       </Label>
-      <Button layoutX="110.0" layoutY="325.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="230.0" styleClass="btnMenu" text="CADASTRAR" />
-      <TextField layoutX="123.0" layoutY="45.0" prefHeight="0.0" prefWidth="269.0">
+      <Button layoutX="110.0" layoutY="325.0" mnemonicParsing="false" onAction="#btnCadastrar" prefHeight="35.0" prefWidth="230.0" styleClass="btnMenu" text="CADASTRAR" />
+      <TextField fx:id="inpNome" layoutX="123.0" layoutY="45.0" prefHeight="0.0" prefWidth="269.0">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <TextField layoutX="123.0" layoutY="127.0" prefHeight="0.0" prefWidth="269.0">
+      <TextField fx:id="inpRA" layoutX="123.0" layoutY="127.0" prefHeight="0.0" prefWidth="269.0">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <TextField layoutX="123.0" layoutY="209.0" prefHeight="0.0" prefWidth="269.0">
+      <TextField fx:id="inpSenha" layoutX="123.0" layoutY="209.0" prefHeight="0.0" prefWidth="269.0">
          <font>
             <Font size="20.0" />
          </font>

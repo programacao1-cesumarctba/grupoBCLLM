@@ -21,17 +21,17 @@
             <String fx:value="telaJogo" />
          </styleClass>
       </Label>
-      <Button layoutX="124.0" layoutY="348.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" styleClass="btnMenu" text="ACESSAR" />
-      <TextField layoutX="124.0" layoutY="120.0" prefHeight="0.0" prefWidth="269.0">
+      <TextField fx:id="raLogin" layoutX="124.0" layoutY="120.0" prefHeight="0.0" prefWidth="269.0">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <TextField layoutX="124.0" layoutY="231.0" prefHeight="0.0" prefWidth="269.0">
+      <TextField fx:id="senhaLogin" layoutX="124.0" layoutY="231.0" prefHeight="0.0" prefWidth="269.0">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <Button fx:id="btnVoltar" layoutX="291.0" layoutY="348.0" mnemonicParsing="false" onAction="#btnVoltar" prefHeight="35.0" prefWidth="102.0" styleClass="btnMenu" text="VOLTAR" />
+      <Button layoutX="124.0" layoutY="348.0" mnemonicParsing="false" onAction="#btnLogin" prefHeight="35.0" prefWidth="160.0" styleClass="btnMenu" text="ACESSAR" />
+      <Button layoutX="291.0" layoutY="348.0" mnemonicParsing="false" onAction="#btnVoltar" prefHeight="35.0" prefWidth="102.0" styleClass="btnMenu" text="VOLTAR" />
    </children>
 </Pane>

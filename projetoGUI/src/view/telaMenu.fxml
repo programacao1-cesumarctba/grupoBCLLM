@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="380.0" maxWidth="380.0" minHeight="450.0" minWidth="450.0" prefHeight="380.0" prefWidth="450.0" styleClass="telaJogo" stylesheets="@estilosJogo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TelaMenuController">
+<Pane minHeight="450.0" minWidth="450.0" prefHeight="380.0" prefWidth="450.0" styleClass="telaJogo" stylesheets="@estilosJogo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TelaMenuController">
    <children>
       <Label alignment="CENTER" layoutX="125.0" layoutY="34.0" prefHeight="43.0" prefWidth="201.0" styleClass="telaJogo" text="MENU">
       </Label>

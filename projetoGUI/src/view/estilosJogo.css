@@ -14,3 +14,10 @@
 	-fx-font-size:28px;
 }
 
+.tableView{
+	-fx-font-size: 20px;
+}
+
+.increment-button, .decrement-button {
+    -fx-padding: 2px;
+}
